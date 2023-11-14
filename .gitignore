@@ -40,6 +40,5 @@ build/
 .idea
 BoulderDash.iml
 
-View
-controller
-entity
+view
+
