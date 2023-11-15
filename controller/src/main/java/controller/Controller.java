@@ -9,6 +9,7 @@ import contract.IView;
  * The Class Controller.
  */
 public final class Controller implements IController {
+	//comment
 
 	/** The view. */
 	private IView		view;
