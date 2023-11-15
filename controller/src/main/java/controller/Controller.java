@@ -9,7 +9,6 @@ import contract.IOrderPerformer;
 import contract.IBoulderDashController;
 import contract.IModel;
 import contract.IView;
-import contract.UserOrder;
 import entity.Permeability;
 import entity.mobile.MobileElementsFactory;
 import entity.motionless.MotionlessElementsFactory;
