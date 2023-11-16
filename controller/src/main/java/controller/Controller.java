@@ -14,9 +14,6 @@ import entity.Permeability;
 import entity.mobile.MobileElementsFactory;
 import entity.motionless.MotionlessElementsFactory;
 
-/**
- * @author Anthony
- */
 
 public final class Controller implements IBoulderDashController, IOrderPerformer {
 
