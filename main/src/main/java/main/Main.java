@@ -6,19 +6,16 @@ package main;
 
 import java.io.File;
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
+import javax.swing.JOptionPane;
+
 import contract.IController;
-import contract.IModel;
 import contract.IModel;
 import controller.Controller;
 import model.DBConnection;
 import model.Model;
-import model.Model;
 import view.View;
-
-import javax.swing.*;
 
 /**
  * The Class Main.
@@ -52,7 +49,7 @@ public abstract class Main {
     }
 
 
-
+    // The method for do the verification of the file after read
     static void checkFiles() {
         File file;
         for (String filename : filenames) {
@@ -65,6 +62,7 @@ public abstract class Main {
         }
     }
 
+    // The method for try to create the file
     static void file() {
         DBConnection db = new DBConnection();
         db.open();
@@ -74,6 +72,7 @@ public abstract class Main {
         db.close();
     }
 
+    // The method for start the game
     static void game() {
         do {
             model = new Model(filenames[0], 1, 1);
