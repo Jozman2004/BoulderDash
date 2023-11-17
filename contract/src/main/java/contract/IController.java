@@ -6,11 +6,10 @@ package contract;
  * @author Jean-Aymeric Diet
  */
 public interface IController {
-
 	/**
-	 * Control.
+	 * @throws InterruptedException
 	 */
-	public void control();
+	void play();
 
 	/**
 	 * Order perform.
@@ -19,4 +18,6 @@ public interface IController {
 	 *          the controller order
 	 */
 	public void orderPerform(ControllerOrder controllerOrder);
+
+	IController getOrderPerformer();
 }

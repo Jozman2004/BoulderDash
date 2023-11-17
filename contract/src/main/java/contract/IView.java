@@ -2,6 +2,8 @@ package contract;
 
 import fr.exia.showboard.BoardFrame;
 
+import javax.swing.*;
+
 /**
  * The Interface IView.
  *

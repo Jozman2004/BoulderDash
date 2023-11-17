@@ -1,64 +1,75 @@
 package model;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * The Class DBConnection.
- *
- * @author Jean-Aymeric Diet
- */
-final class DBConnection {
-	/** The instance. */
-	private static DBConnection	INSTANCE	= null;
+public class DBConnection {
+    private static final String PASSWORD = "Jin800##";
+    private static final String LOGIN = "root";
+    private static final String URL = "jdbc:mysql://localhost:3306/javaproject?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC&autoReconnect=false&useSSL=false";
+    private static Connection connection;
+    private Statement statement;
+    private String filename = "BoulderDashMap1.txt";
+    public DBConnection() {
+        this.connection = null;
+        this.statement = null;
+    }
+    public boolean open() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            this.connection = DriverManager.getConnection(DBConnection.URL,
+                    DBConnection.LOGIN, DBConnection.PASSWORD);
+            this.statement = this.connection.createStatement();
+        } catch (final ClassNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        } catch (final SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
+    public static void close() {
+        try {
+            connection.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
-	/** The connection. */
-	private Connection					connection;
+    }
+    public List<String> loadBD(final String name1) {
+        try {
+            final String sql = "{call GetMapByName(?)}";
+            final CallableStatement call = connection.prepareCall(sql);
+            call.setString(1, name1);
+            call.execute();
+            final ResultSet resultSet = call.getResultSet();
+            List<String> mapLines = new ArrayList<>();
 
-	/**
-	 * Instantiates a new DB connection.
-	 */
-	private DBConnection() {
-		this.open();
-	}
+            while (resultSet.next()) {
+                String line = resultSet.getString("line");
+                mapLines.add(line);
+            }
+            return mapLines;
+        } catch (final SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
 
-	/**
-	 * Gets the single instance of DBConnection.
-	 *
-	 * @return single instance of DBConnection
-	 */
-	public static synchronized DBConnection getInstance() {
-		if (DBConnection.INSTANCE == null) {
-			DBConnection.INSTANCE = new DBConnection();
-		}
-		return DBConnection.INSTANCE;
-	}
+    }
+    public void saveToFile(List<String> mapLines, String fileName) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, false))) {
+            for (String line : mapLines) {
+                writer.write(line);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	/**
-	 * Open.
-	 *
-	 * @return the boolean
-	 */
-	private Boolean open() {
-		final DBProperties dbProperties = new DBProperties();
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			this.connection = DriverManager.getConnection(dbProperties.getUrl(), dbProperties.getLogin(), dbProperties.getPassword());
-		} catch (final ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (final SQLException e) {
-			e.printStackTrace();
-		}
-		return true;
-	}
-
-	/**
-	 * Gets the connection.
-	 *
-	 * @return the connection
-	 */
-	public Connection getConnection() {
-		return this.connection;
-	}
 }

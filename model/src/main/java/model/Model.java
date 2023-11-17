@@ -1,85 +1,71 @@
 package model;
 
-import java.sql.SQLException;
-import java.util.Observable;
-
 import contract.IModel;
-import entity.HelloWorld;
+import entity.element.IMap;
+import entity.element.mobile.IMobile;
+import entity.element.mobile.Player;
 
-/**
- * The Class Model.
- *
- * @author Jean-Aymeric Diet
- */
-public final class Model extends Observable implements IModel {
+import java.io.IOException;
 
-	/** The helloWorld. */
-	private HelloWorld helloWorld;
+public class Model implements IModel {
+    /** The map. */
+    private IMap map;
 
-	/**
-	 * Instantiates a new model.
-	 */
-	public Model() {
-		this.helloWorld = new HelloWorld();
-	}
+    /** The player. */
+    private IMobile myPlayer;
 
-	/**
-     * Gets the hello world.
+    /**
+     * Instantiates a new boulder dash model.
      *
-     * @return the hello world
+     * @param myPlayerStartX  my player start X
+     * @param myPlayerStartY  my player start Y
+     * @throws IOException ignals that an I/O exception has occurred.
      */
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see contract.IModel#getMessage()
-	 */
-	public HelloWorld getHelloWorld() {
-		return this.helloWorld;
-	}
+    public Model(final String mapFile, final int myPlayerStartX, final int myPlayerStartY) {
+        try {
+            this.setMap(new Map(mapFile));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            this.setMyPlayer(new Player(myPlayerStartX, myPlayerStartY, this.getMap()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-	/**
-     * Sets the hello world.
-     *
-     * @param helloWorld
-     *            the new hello world
+    /**
+     * Gets the map
      */
-	private void setHelloWorld(final HelloWorld helloWorld) {
-		this.helloWorld = helloWorld;
-		this.setChanged();
-		this.notifyObservers();
-	}
+    @Override
+    public final IMap getMap() {
+        return this.map;
+    }
 
-	/**
-     * Load hello world.
+    /**
+     * Sets the map.
      *
-     * @param code
-     *            the code
+     * @param map the map to set
      */
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see contract.IModel#getMessage(java.lang.String)
-	 */
-	public void loadHelloWorld(final String code) {
-		try {
-			final DAOHelloWorld daoHelloWorld = new DAOHelloWorld(DBConnection.getInstance().getConnection());
-			this.setHelloWorld(daoHelloWorld.find(code));
-		} catch (final SQLException e) {
-			e.printStackTrace();
-		}
-	}
+    private void setMap(final IMap map) {
+        this.map = map;
+    }
 
-	/**
-     * Gets the observable.
-     *
-     * @return the observable
+    /**
+     * gets the player
      */
-	/*
-	 * (non-Javadoc)
-	 *
-	 * @see contract.IModel#getObservable()
-	 */
-	public Observable getObservable() {
-		return this;
-	}
+    @Override
+    public final IMobile getMyPlayer() {
+        return this.myPlayer;
+    }
+
+    /**
+     * Sets the player.
+     *
+     * @param myPlayer the player to set
+     */
+    private void setMyPlayer(final IMobile myPlayer) {
+        this.myPlayer = myPlayer;
+    }
+
 }

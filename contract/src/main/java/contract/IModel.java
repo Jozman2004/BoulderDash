@@ -1,8 +1,7 @@
 package contract;
 
-import entity.IMap;
-import entity.mobile.IMobile;
-
+import entity.element.IMap;
+import entity.element.mobile.IMobile;
 
 /**
  * The Interface IModel.
@@ -11,8 +10,12 @@ import entity.mobile.IMobile;
  */
 public interface IModel {
 
+	/**
+	 * Gets the hello world.
+	 *
+	 * @return the helloworld entity
+	 */
 	IMap getMap();
 
 	IMobile getMyPlayer();
-
 }
