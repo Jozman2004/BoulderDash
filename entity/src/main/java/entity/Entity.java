@@ -3,7 +3,7 @@ package entity;
 /**
  * The Class Entity.
  *
- * @author Larelle TANESSOK
+ * @author Larelle Sandra TANESSOK
  */
 public abstract class Entity {
 
